@@ -1,11 +1,13 @@
 import UserGame from "../../models/userGameSchema.js";
-import getRiotAccount from "../../services/RiotApiService/fetchAccountRiot.js";
+import AccountLeagueOfLegendsFunctions from "../../services/RiotApiService/lolClasses.js";
+
 const addGameController = async (req, res) => {
     try {
-        const { username, region } = req.body;
-        const riotData = await getRiotAccount(username, region);
-        console.log(riotData);
-        res.send(riotData);
+        const { userId, username, region } = req.body;
+        const riotAccount = new AccountLeagueOfLegendsFunctions(userId, username, region);
+        const summonerData = await riotAccount.getAccountLeagueOfLegends();
+        if(!summonerData) res.status(400).json({ error: "No se pudo encontrar el Summoner"});
+        res.json(summonerData);
     } catch (error) {
         console.log(error);
     }
