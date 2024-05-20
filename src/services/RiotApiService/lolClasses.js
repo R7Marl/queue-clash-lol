@@ -1,4 +1,4 @@
-import { LOLAPI, LEAGUEAPI } from "../../utils/RiotApi/keyLoLApi.js";
+import { LOLAPI } from "../../utils/RiotApi/keyLoLApi.js";
 import RIOTAPI from "../../utils/RiotApi/keyRiotApi.js";
 import { Constants } from "twisted";
 import UserGame from "../../models/userGameSchema.js";
