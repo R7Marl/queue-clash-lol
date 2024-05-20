@@ -8,6 +8,6 @@ const userGameSchema = new Schema({
     winrate: Number
 });
 
-const UserGame = model('UserGame', userGameSchema);
+const UserGame = model('UserGameInformation', userGameSchema, 'UserGameInformation');
 
 export default UserGame;

@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import { signup } from '../../../controllers/AuthControllers/AuthControllers.js';
+import { checkRegister } from '../../../middlewares/Auth/authMiddleware.js';
 const RRouter = Router();
 
 
-RRouter.get('/signup', (req, res ) => {
- res.send('SignUP');   
-})
+RRouter.post('/signup', checkRegister, signup);
 
 export default RRouter;

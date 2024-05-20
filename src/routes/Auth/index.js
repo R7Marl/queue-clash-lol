@@ -3,7 +3,7 @@ import LRouter from './SignIn/SignIn.js';
 import RRouter from './SignUp/SignUp.js';
 const router = Router();
 
-router.use('/signin', LRouter);
-router.use('/signup', RRouter);
+router.use('/user', LRouter);
+router.use('/user', RRouter);
 
 export default router;

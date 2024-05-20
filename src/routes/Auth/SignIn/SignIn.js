@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import { signin } from '../../../controllers/AuthControllers/AuthControllers.js';
+import { checkLogin } from '../../../middlewares/Auth/authMiddleware.js';
 const LRouter = Router();
 
 
-LRouter.get('/signin', (req, res ) => {
- res.send('signin');   
-})
+LRouter.post('/signin', checkLogin, signin);
 
 export default LRouter;
