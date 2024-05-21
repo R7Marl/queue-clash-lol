@@ -1,10 +1,8 @@
 import { Router } from 'express';
+import matchRoutes from './matchs/matchsRoutes.js';
 const router = Router();
 
-router.get('/queu', (req, res ) => {
-    console.log(process.env.RIOT_API_KEY)
-    res.send('Queue');
-})
+router.use("/queue", matchRoutes);
 
 
 export default router;

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "dev": "node --watch index"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.2",
     "morgan": "^1.10.0",
+    "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "twisted": "^1.60.2",
     "util": "^0.12.5"

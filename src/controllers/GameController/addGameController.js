@@ -1,4 +1,3 @@
-import UserGame from "../../models/userGameSchema.js";
 import AccountLeagueOfLegendsFunctions from "../../services/RiotApiService/lolClasses.js";
 
 const addGameController = async (req, res) => {

@@ -1,6 +1,5 @@
 import { RiotApi } from 'twisted'
 
-console.log(process.env.RIOT_API_KEY);
 const RIOTAPI = new RiotApi({
   rateLimitRetry: true,
   rateLimitRetryAttempts: 1,

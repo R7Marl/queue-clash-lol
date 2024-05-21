@@ -19,12 +19,15 @@ class AccountLeagueOfLegendsFunctions {
         try {
             const riotResponse = await RIOTAPI.Account.getByRiotId(username1, tag, Constants.RegionGroups.AMERICAS);
             const riotData = riotResponse.response;
-            if (!riotData) throw "Usuario no encontrado";
-            this.data.riotData = riotData;
+            if (!riotData) throw new Error("Usuario no encontrado");
+            this.data.riotData = {
+                puuid: riotData.puuid,
+                gameName: riotData.gameName,
+                tagLine: riotData.tagLine
+            };
             return riotData;
         } catch (error){
-            console.log(error)
-            return error
+            throw new Error("Hubo un error con la API Riot");
         }
     }
 
@@ -35,14 +38,30 @@ class AccountLeagueOfLegendsFunctions {
         const AccountLeagueOfLegends = AccountLeagueOfLegendsResponse.response;
         console.log(AccountLeagueOfLegends);
         if (!AccountLeagueOfLegends) throw "Usuario no encontrado 1";
-        this.data.Summoner = AccountLeagueOfLegends;
+        const { summonerLevel, id, profileIconId } = AccountLeagueOfLegends;
+        this.data.riotData = {
+            ...this.data.riotData,
+            summonerLevel,
+            profileIconId
+        };
         const rankedDataResponse = await LOLAPI.League.bySummoner(AccountLeagueOfLegends.id, Constants.Regions.LAT_SOUTH);
         const rankedData = rankedDataResponse.response;
         if (!rankedData || rankedData.length === 0) throw new Error("Datos de liga no encontrados");
         if (!rankedData) throw "Usuario no encontrado 2";
-        this.data.leagueData = rankedData[0];
-        let winrate = this.calculateWinrate(rankedData[0].wins, rankedData[0].losses);
-        this.data.leagueData.winrate = Math.floor(winrate);
+        const { tier, rank, wins, losses, queueType, summonerId, leaguePoints } = rankedData[0];
+        this.data.riotData = {
+            ...this.data.riotData,
+            tier,
+            rank,
+            wins,
+            losses,
+            queueType,
+            summonerId,
+            leaguePoints
+        };
+        let winrate = this.calculateWinrate(wins, losses);
+        this.data.riotData.winrate = Math.floor(winrate);
+        console.log(this.data);
         this.saveAccountLeagueOfLegends();
         return this.data;
     }
