@@ -1,3 +1,4 @@
+import ELO from "../../../utils/GameData/GameElo";
 export default async (io) => {
 
     class Queue {
@@ -7,8 +8,10 @@ export default async (io) => {
         }
 
         enqueue(player) {
-            this.queue.push(player);
-            this.queueSize++;
+            if(!this.queue.some(p => p.id !== player.id)) {
+                this.queue.push(player);
+                this.queueSize++;
+            }
             return this.queue;
         }
 
@@ -40,6 +43,22 @@ export default async (io) => {
                 return true;
             }
         }
+        compareRankFlex() {
+         const comparedPlayers = [];
+         this.queue.forEach((player, index) => {
+            const playersCompared = this.queue.slice(index + 1).filter(otherPlayer => {
+                return player.rank !== otherPlayer.rank
+            })
+            if(playersCompared.length > 0) {
+                playersCompared.forEach(otherPlayer => {
+                    const playerRank = ELO[player.rank];
+                    const otherPlayerRank = ELO[otherPlayer.rank];
+                    comparedPlayers.push({player, otherPlayer, playerRank, otherPlayerRank});
+                })
+            }
+         })
+         return comparedPlayers;
+        }
     }
 
     const queue = new Queue();
@@ -62,6 +81,17 @@ export default async (io) => {
                     }
                 }
             }
-        })
+        });
+        socket.on('findFlexParty', async(data) => {
+            if(queue.queueSize <= 4) {
+                queue.enqueue(data);
+                if(queue.queueSize === 4) {
+                    console.log('5 jugadores juntados');
+                    io.emit('matchFlex', "Se encontraron 5 jugadores disponibles");
+                    io.emit('matchFlex', queue.getQueue());
+                    queue.clearQueue();
+                } 
+            }
+        });
     })
 }
